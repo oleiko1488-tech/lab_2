@@ -2,44 +2,308 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Моє Резюме</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        
+        
+        #comments-section {
+            margin-bottom: 50px;
+        }
+        .comment {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .comment h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+       
+        footer {
+            border-top: 2px solid #333;
+            padding-top: 20px;
+            margin-top: 40px;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); 
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: black;
+        }
+
+       
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .feedback-form input, .feedback-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .feedback-form button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .feedback-form button:hover {
+            background-color: #218838;
+        }
+
+        
+        .theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: #333;
+            color: #fff;
+            transition: 0.3s;
+        }
+        .theme-btn:hover {
+            background-color: #555;
+        }
+
+        
+        body.dark-theme {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .theme-btn {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        body.dark-theme .theme-btn:hover {
+            background-color: #ddd;
+        }
+
+        body.dark-theme .comment {
+            background-color: #1e1e1e;
+            border-color: #333;
+        }
+        body.dark-theme .comment h4 {
+            color: #66b3ff; 
+        }
+
+        body.dark-theme footer {
+            background-color: #1e1e1e;
+            border-color: #555;
+        }
+
+        body.dark-theme .modal-content {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+        }
+        
+        body.dark-theme .feedback-form input, 
+        body.dark-theme .feedback-form textarea {
+            background-color: #333;
+            color: #fff;
+            border-color: #555;
+        }
+
+    </style>
 </head>
 <body>
-    <center>
-        <h1>Прізвище та Ім'я</h1>
-        <p>Контакти: email@example.com | +380 00 000 00 00</p>
-    </center>
+    <body>
+    <button id="theme-toggle" class="theme-btn">🌙 Нічна тема</button>
 
-    <hr>
+    <h1>Відгуки попередніх роботодавців</h1>
+    
+    <div id="comments-section">
+        <p>Завантаження коментарів...</p>
+    </div>
 
-    <h3>Про мене</h3>
-    <p>Короткий опис ваших цілей та особистих якостей.</p>
+    <footer>
+        <h3>Інформація про систему (з localStorage):</h3>
+        <p id="storage-info"></p>
+    </footer>
 
-    <h3>Освіта</h3>
-    <ul>
-        <li><strong>Університет:</strong> Назва закладу (роки навчання)</li>
-        <li><strong>Спеціальність:</strong> Ваша спеціальність</li>
-    </ul>
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2>Зворотній зв'язок</h2>
+            
+            <form class="feedback-form" action="https://formspree.io/f/mjgezqbz" method="POST">
+                <label>
+                    Ім'я:
+                    <input type="text" name="name" required>
+                </label>
+                
+                <label>
+                    Email:
+                    <input type="email" name="email" required>
+                </label>
+                
+                <label>
+                    Номер телефону:
+                    <input type="tel" name="phone" required>
+                </label>
+                
+                <label>
+                    Повідомлення:
+                    <textarea name="message" rows="5" required></textarea>
+                </label>
+                
+                <button type="submit">Відправити</button>
+            </form>
+        </div>
+    </div>
 
-    <h3>Досвід роботи</h3>
-    <table border="1">
-        <tr>
-            <th>Період</th>
-            <th>Компанія/Проєкт</th>
-            <th>Обов'язки</th>
-        </tr>
-        <tr>
-            <td>2023 - Сьогодні</td>
-            <td>Назва компанії</td>
-            <td>Розробка інтерфейсів, робота з Git</td>
-        </tr>
-    </table>
+    <script>
+    
+        
+        // Отримуємо дані про платформу та браузер
+        const osData = navigator.platform || "Невідома ОС";
+        const browserData = navigator.userAgent || "Невідомий браузер";
 
-    <h3>Навички</h3>
-    <ul>
-        <li>HTML5 (базовий рівень)</li>
-        <li>Git та GitHub</li>
-        <li>Англійська мова (B2)</li>
-    </ul>
+        // Зберігаємо у localStorage
+        localStorage.setItem('userOS', osData);
+        localStorage.setItem('userBrowser', browserData);
+
+        // Виводимо у футер
+        const storageInfoElement = document.getElementById('storage-info');
+        storageInfoElement.innerHTML = `
+            <strong>Операційна система:</strong> ${localStorage.getItem('userOS')} <br>
+            <strong>Браузер:</strong> ${localStorage.getItem('userBrowser')}
+        `;
+
+        // --- 2. Відображення динамічного вмісту із сервера ---
+        
+        // ВКАЖІТЬ СВІЙ НОМЕР ВАРІАНТУ ТУТ (замість 1):
+        const variantNumber = 9; 
+        const apiUrl = `https://jsonplaceholder.typicode.com/posts/${variantNumber}/comments`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(comments => {
+                const commentsContainer = document.getElementById('comments-section');
+                commentsContainer.innerHTML = ''; // Очищаємо текст "Завантаження..."
+
+                // Відображаємо отримані коментарі у порядку їх отримання
+                comments.forEach(comment => {
+                    const commentBlock = document.createElement('div');
+                    commentBlock.className = 'comment';
+                    commentBlock.innerHTML = `
+                        <h4>${comment.name} (${comment.email})</h4>
+                        <p>${comment.body}</p>
+                    `;
+                    commentsContainer.appendChild(commentBlock);
+                });
+            })
+            .catch(error => {
+                console.error("Помилка при завантаженні коментарів:", error);
+                document.getElementById('comments-section').innerHTML = "<p>Не вдалося завантажити коментарі.</p>";
+            });
+
+        // --- 3. Модальне вікно та форма зворотного зв'язку ---
+        
+        const modal = document.getElementById('feedbackModal');
+        const closeModalBtn = document.getElementById('closeModal');
+
+        
+       
+        setTimeout(() => {
+            modal.style.display = 'block';
+        }, 60000); 
+
+       
+        closeModalBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const bodyElement = document.body;
+
+        
+        function setAutoTheme() {
+            
+            const currentHour = new Date().getHours();
+            
+            // Якщо час між 07:00 (включно) та 21:00 (не включно, тобто до 20:59) - ДЕННА ТЕМА
+            if (currentHour >= 7 && currentHour < 21) {
+                bodyElement.classList.remove('dark-theme');
+                themeToggleBtn.innerText = '🌙 Нічна тема';
+            } else {
+                // В інший час - НІЧНА ТЕМА
+                bodyElement.classList.add('dark-theme');
+                themeToggleBtn.innerText = '☀️ Денна тема';
+            }
+        }
+
+        // Викликаємо функцію одразу при завантаженні сторінки
+        setAutoTheme();
+
+        // Додаємо ручне перемикання по кліку на кнопку
+        themeToggleBtn.addEventListener('click', () => {
+            // toggle() додає клас, якщо його немає, і забирає, якщо він є
+            bodyElement.classList.toggle('dark-theme');
+            
+            // Змінюємо текст кнопки відповідно до активної теми
+            if (bodyElement.classList.contains('dark-theme')) {
+                themeToggleBtn.innerText = '☀️ Денна тема';
+            } else {
+                themeToggleBtn.innerText = '🌙 Нічна тема';
+            }
+        });
+        
+    </script>
 </body>
 </html>
